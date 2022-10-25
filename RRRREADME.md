@@ -1,4 +1,4 @@
 # ExampleTHing
-//HIHHIHIHIHIHIHHI
-//This is a rrrreadme
+HIHHIHIHIHIHIHHI
+HAAHAH
 OR DO NOT READ ME!
