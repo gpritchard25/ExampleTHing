@@ -1,0 +1,1100 @@
+using System.Drawing;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+public class gameController : MonoBehaviour
+{
+    //----------Variables----------//
+        public TMP_Text txtTitle;
+        public TMP_Text txtContent;
+        public TMP_Text txtScore;
+        public TMP_Text txtAttempts;
+        public TMP_Text txtResult;
+        public TMP_Text optionA;
+        public TMP_Text optionB;
+        public string main;
+        public string menu;
+        public string win;
+        public string puzzleScene;
+        public bool quitOption = false;
+        public int xCoord = 0;
+        public int yCoord = 0;
+        public bool speechA1 = true, speechA2 = true, speechA3 = true, speechB1 = true, speechB2 = true, speechB3 = true, speechC1 = true, speechC2 = true, speechC3 = true;
+        public bool fvA1 = true, fvA2 = true, fvA3 = true, fvB1 = true, fvB2 = true,fvB3 = true, fvC1 = true, fvC2 = true, fvC3 = true;
+        public int stA1 = 3, stA2 = 3, stA3 = 3, stB1 = 3, stB2 = 3, stB3 = 3, stC1 = 3, stC2 = 3, stC3 = 3;
+        public bool isA1 = false, isA2 = false, isA3 = false, isB1 = false, isB2 = false, isB3 = false, isC1 = false, isC2 = false, isC3 = false;
+        public bool inop1A1 = false, inop1A2 = false, inop1A3 = false, inop1B1 = false, inop1B2 = false, inop1B3 = false, inop1C1 = false, inop1C2 = false, inop1C3 = false;
+        public bool inop2A1 = false, inop2A2 = false, inop2A3 = false, inop2B1 = false, inop2B2 = false, inop2B3 = false, inop2C1 = false, inop2C2 = false, inop2C3 = false;
+        public bool oplim1A1 = true, oplim1A2 = true, oplim1A3 = true, oplim1B1 = true, oplim1B2 = true, oplim1B3 = true, oplim1C1 = true, oplim1C2 = true, oplim1C3 = true;
+        public bool oplim2A1 = true, oplim2A2 = true, oplim2A3 = true, oplim2B1 = true, oplim2B2 = true, oplim2B3 = true, oplim2C1 = true, oplim2C2 = true, oplim2C3 = true;
+        public Sprite m00, m10, m01, m11, mn10, m0n1, mn1n1, m1n1, mn11;
+        public Image myImageDisplay;
+        public Image charImage;
+        public Image mapImage;
+        public Sprite charUp;
+        public Sprite charLeft;
+        public Sprite charRight;
+        public Sprite charDown;
+        public Sprite c00;
+        public Sprite c10;
+        public Sprite c01;
+        public Sprite c11;
+        public Sprite cn10;
+        public Sprite c0n1;
+        public Sprite cn1n1;
+        public Sprite c1n1;
+        public Sprite cn11;
+        public int score = 0;
+        //-----gameStates-----//
+        enum GameStates {gs00, gs10, gs01, gs11, gsn10, gs0n1, gsn1n1, gs1n1, gsn11};
+    //----------Variables-End----------//
+
+    void Start()
+    {
+        //------Start-parameters-----//
+        xCoord = 0;
+        yCoord = 0;
+        charImage.sprite = charDown;
+        myImageDisplay.sprite = c00;
+        optionA.text = "";
+        optionB.text = "";
+        txtContent.text = "Press " + "'E'" + " to learn about this area ";
+        //-----End-parameters-----//
+    }
+
+
+    void Update()
+    {
+        //-----score-----//
+        txtScore.text = "Score is: " + score;
+        PointDepot.farmscore = score;
+        //----------Key inputs-----------//
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            txtContent.text = "Are you sure you want to quit?";
+            optionA.text = "Y";
+            optionB.text = "N";
+            quitOption = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            if (quitOption == true)
+            {
+                Application.Quit();
+            }
+            
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            txtContent.text = "Press " + "'E'" + " to learn about this area ";
+            quitOption = false;
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            yCoord += 1;
+            charImage.sprite = charUp;
+            optionA.text = "";
+            optionB.text = "";
+            txtContent.text = "Press " + "'E'" + " to learn about this area ";
+
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            SceneManager.LoadScene (menu);
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            yCoord -= 1;
+            charImage.sprite = charDown;
+            optionA.text = "";
+            optionB.text = "";
+            txtContent.text = "Press " + "'E'" + " to learn about this area ";
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            xCoord -= 1;
+            charImage.sprite = charLeft;
+            optionA.text = "";
+            optionB.text = "";
+            txtContent.text = "Press " + "'E'" + " to learn about this area ";
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            xCoord += 1;
+            charImage.sprite = charRight;
+            optionA.text = "";
+            optionB.text = "";
+            txtContent.text = "Press " + "'E'" + " to learn about this area ";
+        }
+        //----------Variable limits----------//
+        if (xCoord > 1)
+        {
+            xCoord = 1;
+        }
+        if (xCoord < -1)
+        {
+            xCoord = -1;
+        }
+        if (yCoord > 1)
+        {
+            yCoord = 1;
+        }
+        if (yCoord < -1)
+        {
+            yCoord = -1;
+        }
+        //----------image swapper & coord check for game states----------//
+        if (xCoord == 0 & yCoord == 0)
+        {
+            myImageDisplay.sprite = c00;
+            mapImage.sprite = m00;
+            txtTitle.text = "Spawn Field";
+            txtAttempts.text = "Attempts left: " + stB2.ToString();
+            if (stB2 == 0)
+            {
+                txtContent.text = "you've finished the speech encounter and may move on to the next area";
+            }
+            if (fvB2)
+            {
+            score += 5;
+            fvB2 = false;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                gs00();
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                SceneManager.LoadScene (puzzleScene);
+            }
+            
+        }
+        if (xCoord == 1 & yCoord == 0)
+        {
+            myImageDisplay.sprite = c10;
+            mapImage.sprite = m10;
+            txtTitle.text = "The Farmhouse";
+            txtAttempts.text = "Attempts left: " + stB3.ToString();
+            if (stB3 == 0)
+            {
+                txtContent.text = "you've finished the speech encounter and may move on to the next area";
+            }
+            if (fvB3)
+            {
+            score += 5;
+            fvB3 = false;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+            gs10();
+            }
+        }
+        if (xCoord == 0 & yCoord == 1)
+        {
+            myImageDisplay.sprite = c01;
+            mapImage.sprite = m01;
+            txtTitle.text = "Wheat field north";
+            txtAttempts.text = "Attempts left: " + stA2.ToString();
+            if (stA2 == 0)
+            {
+                txtContent.text = "you've finished the speech encounter and may move on to the next area";
+            }
+            if (fvA2)
+            {
+             score +=5;
+             fvA2 = false;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+            gs01();    
+            }
+
+        }
+        if (xCoord == -1 & yCoord == 0)
+        {
+            myImageDisplay.sprite = cn10;
+            mapImage.sprite = mn10;
+            txtTitle.text = "Lower Lake";
+            txtAttempts.text = "Attempts left: " + stB1.ToString();
+            if (stB1 == 0)
+            {
+                txtContent.text = "you've finished the speech encounter and may move on to the next area";
+            }
+            if (fvB1)
+            {
+                score += 5;
+                fvB1 = false;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                gsn10();
+            }
+        }
+        if (xCoord == 0 & yCoord == -1)
+        {
+            myImageDisplay.sprite = c0n1;
+            mapImage.sprite = m0n1;
+            txtTitle.text = "A field of tall grass";
+            txtAttempts.text = "Attempts left: " + stC2.ToString();
+            if (stC2 == 0)
+            {
+                txtContent.text = "you've finished the speech encounter and may move on to the next area";
+            }
+            if (fvC2)
+            {
+                score += 5;
+                fvC2 = false;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                gs0n1();               
+            }
+
+        }
+        if (xCoord == 1 & yCoord == -1)
+        {
+            myImageDisplay.sprite = c1n1;
+            mapImage.sprite = m1n1;
+            txtTitle.text = "A Steep hill";
+            txtAttempts.text = "Attempts left: " + stC3.ToString();
+            if (stC3 == 0)
+            {
+                txtContent.text = "you've finished the speech encounter and may move on to the next area";
+            }
+            if (fvC3)
+            {
+                score += 5;
+                fvC3 = false;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                gs1n1();              
+            }
+
+        }
+        if (xCoord == -1 & yCoord == 1)
+        {
+            myImageDisplay.sprite = cn11;
+            mapImage.sprite = mn11;
+            txtTitle.text = "Upper lake and wheat field Northwest";
+            txtAttempts.text = "Attempts left: " + stA1.ToString();
+            if (stA1 == 0)
+            {
+                txtContent.text = "you've finished the speech encounter and may move on to the next area";
+            }
+            if (fvA1)
+            {
+                score += 5;
+                fvA1 = false;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                gsn11();               
+            }
+
+        }
+        if (xCoord == 1 & yCoord == 1)
+        {
+            myImageDisplay.sprite = c11;
+            mapImage.sprite = m11;
+            txtTitle.text = "Wheat field northeast and grove";
+            txtAttempts.text = "Attempts left: " + stA3.ToString();
+            if (stA3 == 0)
+            {
+                txtContent.text = "you've finished the speech encounter and may move on to the next area";
+            }
+            if (fvA3)
+            {
+                score += 5;
+                fvA3 = false;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                gs11();       
+            }
+
+        }
+        if (xCoord == -1 & yCoord == -1)
+        {
+            myImageDisplay.sprite = cn1n1;
+            mapImage.sprite = mn1n1;
+            txtAttempts.text = "Attempts left: " + stC1.ToString();
+            if (stC1 == 0)
+            {
+                txtContent.text = "you've finished the speech encounter and may move on to the next area";
+            }
+            txtTitle.text = "Forest's edge";
+            if (fvC1)
+            {
+                score += 5;
+                fvC1 = false;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                gsn1n1();               
+            }
+
+        }
+        //-----------Speech Branches----------//
+        //-----0,0-----B2-----done-----//
+        if (isB2 & stB2 > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (inop2B2 == false & oplim1B2 == true)
+                {
+                    txtContent.text = "to branch you press numbers on the keyboard that relate to the option number ";
+                    optionA.text = "Option 3 is the star ending worth 15 pts";
+                    optionB.text = "Option 4 is and example of how you can fail a speech encounter";
+                    inop1B2 = true;
+                    oplim1B2 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (inop1B2 == false & oplim2B2 == true)
+                {
+                    txtContent.text = "This is the second option which is worth more score it will not always be the second though and will be mixed up in the future";
+                    optionA.text = "Option 5 is 'correct' ending worth 10";
+                    optionB.text = "Option 6 is a mediocre ending worth 5";
+                    inop2B2 = true;
+                    oplim2B2 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) & inop1B2)
+            {
+                txtResult.text =  ("Each speech encounter branches into four different scoring endings");
+                score += 15;
+                isB2 = false;
+                inop1B2 = false;
+                stB2 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) & inop1B2)
+            {
+                txtResult.text = ("One ending will be bad and reset the encounter and lower you attempts by one, you have three per tile press E to start again");
+                score -= 10;
+                stB2 -=1;
+                speechB2 = true;
+                inop1B2 = false;
+                oplim1B2 = true;
+                oplim2B2 = true;
+                if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (speechB2 == true)
+                {
+                    score += 10; 
+                }
+                gs00();
+            }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5) & inop2B2)
+            {
+                txtResult.text = ("Isn't this branching fun! ");
+                score += 10;
+                isB2 = false;
+                inop2B2 = false;
+                stB2 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6) & inop2B2)
+            {
+                txtResult.text = ("once you complete a speech encounter you cannot do it again unless you restart");
+                score += 5;
+                isB2 = false;
+                inop2B2 = false;
+                stB2 = 0;
+            }
+        }
+        //-----1,0-----B3-----done-----//
+        if (isB3 && stB3 > 0)
+        {
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                if (inop2B3 == false & oplim1B3 == true)
+                {
+                    txtContent.text = "Great job with the hay, should it go?";
+                    optionA.text = "Option 3 in the loft";
+                    optionB.text = "Option 4 in the cow pen";
+                    inop1B3 = true;
+                    oplim1B3 = false;
+                    score += 10;
+                }
+
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    if (inop1B3 == false & oplim2B3 == true)
+                    {
+                        txtContent.text = "venturing out into the field are you going to";
+                        optionA.text = "Option 5 pick flowers to sell";
+                        optionB.text = "Option 6 sit and think for a while";
+                        inop2B3 = true;
+                        oplim2B3 = false;
+                        score += 10;
+                    }
+
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha3) && inop1B3)
+                {
+                    txtResult.text =  ("Great! now we will have enough winter food to keep the animals happy");
+                    score += 15;
+                    isB3 = false;
+                    inop1B3 = false;
+                    stB3 = 0;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha4) && inop1B3)
+                {
+                    txtResult.text = ("Uh oh, the cows ate all the freshly baled hay, try again");
+                    score -= 10;
+                    stB2 -=1;
+                    speechB3 = true;
+                    inop1B3 = false;
+                    oplim1B3 = true;
+                    oplim2B3 = true;
+                    if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (speechB3 == true)
+                    {
+                        score += 10; 
+                    }
+                    gs10();
+                }
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha5) & inop2B3)
+                {
+                    txtResult.text = ("You end up making a good amount of money selling flowers from you farm, good luck");
+                    score += 10;
+                    isB3 = false;
+                    inop2B3 = false;
+                    stB3 = 0;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha6) & inop2B3)
+                {
+                    txtResult.text = ("After a few hours you are feeling relaxed and ready to go");
+                    score += 5;
+                    isB3 = false;
+                    inop2B3 = false;
+                    stB3 = 0;
+                }
+        }
+        //-----0,1-----A2-----done-----//
+        if (isA2 & stA2 > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (inop2A2 == false & oplim1A2 == true)
+                {
+                    txtContent.text = "After watering the newly planted seeds sprouts begin to pop up do you want to";
+                    optionA.text = "Option 3 Spread some bonemeal to increase next seasons harvest";
+                    optionB.text = "Option 4 use some cheap 'MagiGrow' you bought in an alley";
+                    inop1A2 = true;
+                    oplim1A2 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (inop1A2 == false & oplim2A2 == true)
+                {
+                    txtContent.text = "Now that you have tilled the land do you want to do?";
+                    optionA.text = "Option 5 plant more wheat";
+                    optionB.text = "Option 6 plant mixed vegatables";
+                    inop2A2 = true;
+                    oplim2A2 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) & inop1A2)
+            {
+                txtResult.text = ("The harvest is going to look great next season!");
+                score += 15;
+                isA2 = false;
+                inop1A2 = false;
+                stA2 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) & inop1A2)
+            {
+                txtResult.text = ("The wheat seedlings are not affected at all press 'E' to begin again");
+                score -= 10;
+                stA2 -=1;
+                speechA2 = true;
+                inop1A2 = false;
+                oplim1A2 = true;
+                oplim2A2 = true;
+                if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (speechA2 == true)
+                {
+                    score += 10; 
+                }
+                gs01();
+            }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5) & inop2A2)
+            {
+                txtResult.text = ("with next years harvest looking good you can keep moving around");
+                score += 10;
+                isA2 = false;
+                inop2A2 = false;
+                stB2 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6) & inop2A2)
+            {
+                txtResult.text = ("While you have planted new crops the family bakery might need to make a few recipe adjustments");
+                score += 5;
+                isA2 = false;
+                inop2A2 = false;
+                stA2 = 0;
+            }
+        }
+        //------1,0-----B1-----done-----//
+        if (isB1 & stB1 > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (inop2B1 == false & oplim1B1 == true)
+                {
+                    txtContent.text = "What Method should you use to catch your dinner?";
+                    optionA.text = "Option 3 The trusty rod that your family left in your possesion";
+                    optionB.text = "Option 4 try spearfishing for a bit of excitement";
+                    inop1B1 = true;
+                    oplim1B1 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (inop1B1 == false & oplim2B1 == true)
+                {
+                    txtContent.text = "while looking for smaller schools you come across a group of crabs what would you like to do";
+                    optionA.text = "Option 5 decide to continue after the little fish as they are more filling";
+                    optionB.text = "Option 6 try to catch the crabs";
+                    oplim2B1 = false;
+                    inop2B2 = true;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) & inop1B1)
+            {
+                txtResult.text = ("With your trusty rod you have caught some big fish, you wont go hungry again for a while");
+                score += 15;
+                isB1 = false;
+                inop1B1 = false;
+                stB1 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) & inop1B1)
+            {
+                txtResult.text = ("while trying to spearfish you fall off a drop and lose your spear try again? ('E') ");
+                score -= 10;
+                stB1 -=1;
+                speechB1 = true;
+                inop1B1 = false;
+                oplim1B1 = true;
+                oplim2B1 = true;
+                if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (speechB1 == true)
+                {
+                    score += 10; 
+                }
+                gsn10();
+            }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5) & inop2B1)
+            {
+                txtResult.text = ("while not as big you have still caught enough fish to keep you fed for a while");
+                score += 10;
+                isB1 = false;
+                inop2B1 = false;
+                stB1 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6) & inop2B1)
+            {
+                txtResult.text = ("even though crab tastes amazing the claw marks on your legs might not have been worth it");
+                score += 5;
+                isB1 = false;
+                inop2B1 = false;
+                stB1 = 0;
+            }
+        }
+        //-----0,-1-----C2-----done-----//
+        if (isC2 & stC2 > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (inop2C2 == false & oplim1C2 == true)
+                {
+                    txtContent.text = "Bursting through the wall of grass several disfigured humans are crouching around some sort of meat";
+                    optionA.text = "Option 3 Sprint away from the monsters before they notice you";
+                    optionB.text = "Option 4 fight to free your family's spirits";
+                    inop1C2 = true;
+                    oplim1C2 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (inop1C2 == false & oplim2C2 == true)
+                {
+                    txtContent.text = "While it has to have been just a bunny you are now wandering through a maze like section";
+                    optionA.text = "Option 5 decide to follow the maze to have a little fun";
+                    optionB.text = "Option 6 decide your to grown up and push straight through the grass";
+                    inop2C2 = true;
+                    oplim2C2 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) & inop1C2)
+            {
+                txtResult.text = ("You manage to escape with a wild howling at your tail. the monsters have now returned to their meal");
+                score += 15;
+                isC2 = false;
+                inop1C2 = false;
+                stC2 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) & inop1C2)
+            {
+                txtResult.text = ("You are quickly overwhelmed and defeated try again? ('E') ");
+                score -= 10;
+                stC2 -=1;
+                speechC2 = true;
+                inop1C2 = false;
+                oplim1C2 = true;
+                oplim2C2 = true;
+                if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (speechC2 == true)
+                {
+                    score += 10; 
+                }
+                gs0n1();
+            }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5) & inop2C2)
+            {
+                txtResult.text = ("while not as big you have still caught enough fish to keep you fed for a while");
+                score += 10;
+                isC2 = false;
+                inop2C2 = false;
+                stC2 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6) & inop2C2)
+            {
+                txtResult.text = ("even though crab tastes amazing the claw marks on your legs might not have been worth it");
+                score += 5;
+                isC2 = false;
+                inop2C2 = false;
+                stC2 = 0;
+            }
+        }
+        //-----1,-1-----C3-----done-----//
+        if (isC3 & stC3 > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (inop2C3 == false & oplim1C3 == true)
+                {
+                    txtContent.text = "Sliding down the hill you find a group of greatly oversided ants taking large chunks of meat into a mountain of an anthill";
+                    optionA.text = "Option 3 Back Away from the nest and continue to observe";
+                    optionB.text = "Option 4 try to crawl in to the nest";
+                    inop1C3 = true;
+                    oplim1C3= false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (inop1C3 == false & oplim2C3 == true)
+                {
+                    txtContent.text = "After a while the grass is dry and you climb down and now face a seemingly abandoned giant anthill";
+                    optionA.text = "Option 5 peer into the nest through holes in the side";
+                    optionB.text = "Option 6 Harvest some samples from the built up keratin";
+                    inop2C3 = true;
+                    oplim2C3 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) & inop1C3)
+            {
+                txtResult.text = ("After watching the ants eat the sun has finally cast rays onto the nest. A loud screaming sound can be heard and all the ants you can see are now piles of ash");
+                score += 15;
+                isC3 = false;
+                inop1C3 = false;
+                stC3 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) & inop1C3)
+            {
+                txtResult.text = ("while trying to enter the nest you start to feel sharp nicks against your body and you are paralyzed and eaten try again? ('E') ");
+                score -= 10;
+                stC3 -=1;
+                speechC3 = true;
+                inop1C3 = false;
+                oplim1C3 = true;
+                oplim2C3 = true;
+                if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (speechC3 == true)
+                {
+                    score += 10; 
+                }
+                gs1n1();
+            }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5) & inop2C3)
+            {
+                txtResult.text = ("Aside from the lack of ants the anthill is filled with chunks of meat and vegatables");
+                score += 10;
+                isC3 = false;
+                inop2C3 = false;
+                stC3 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6) & inop2C3)
+            {
+                txtResult.text = ("Even though the material you have harvested is as hard as diamond it is currently useless");
+                score += 5;
+                isC3 = false;
+                inop2C3 = false;
+                stC3 = 0;
+            }
+        }
+        //----- -1,1-----A1----done-----//
+        if (isA1 & stA1 > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (inop2A1 == false & oplim1A1 == true)
+                {
+                    txtContent.text = "Casting out the family's fishing rod you hear a growl and you know you have caught the famous megalofish";
+                    optionA.text = "Option 3 try to resist as cathing this fish will make you rich and famous";
+                    optionB.text = "Option 4 Cut the line before you are pulled in!";
+                    inop1A1 = true;
+                    oplim1A1= false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (inop1A1 == false & oplim2A1 == true)
+                {
+                    txtContent.text = "Plunging into the frigid lake you can see that it is bigger that it looks from the surface, a cave opening catches your eye";
+                    optionA.text = "Option 5 head into the cave";
+                    optionB.text = "Option 6 Pick oysters from the bottom";
+                    inop2A1 = true;
+                    oplim2A1 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) & inop1A1)
+            {
+                txtResult.text = ("Heaving with all of your strength an Absolutely MASSIVE fish which you then sell for a hefty price");
+                score += 15;
+                isA1 = false;
+                inop1A1 = false;
+                stA1 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) & inop1A1)
+            {
+                txtResult.text = ("You cut the line and have lost the catch try again? ('E') ");
+                score -= 10;
+                stA1 -=1;
+                speechA1 = true;
+                inop1A1 = false;
+                oplim1A1 = true;
+                oplim2A1 = true;
+                if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (speechA1 == true)
+                {
+                    score += 10; 
+                }
+                gsn11();
+            }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5) & inop2A1)
+            {
+                txtResult.text = ("Inside the cave you find a tiny model treasure chest containing 10 dollars");
+                score += 10;
+                isA1 = false;
+                inop2A1 = false;
+                stA1 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6) & inop2A1)
+            {
+                txtResult.text = ("Even though you collect as many oysters as you can carry you only find one pearl");
+                score += 5;
+                isA1 = false;
+                inop2A1 = false;
+                stA1 = 0;
+            }
+        }
+        //-----1,1-----A3-----done-----//
+        if (isA3 & stA3 > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (inop2A3 == false & oplim1A3 == true)
+                {
+                    txtContent.text = "Climbing higher and higher you begin to see very strange pinecones";
+                    optionA.text = "Option 3 Pick the pinecones that looks like rotting meat";
+                    optionB.text = "Option 4 Pick the diamond crusted pinecones";
+                    inop1A3 = true;
+                    oplim1A3= false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (inop1A3 == false & oplim2A3 == true)
+                {
+                    txtContent.text = "leaning back against the trees you feel safe and begin to dream about your family";
+                    optionA.text = "Option 5 Watch and reflect";
+                    optionB.text = "Call out to them";
+                    inop2A3 = true;
+                    oplim2A3 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) & inop1A3)
+            {
+                txtResult.text = ("While the initial feel and smell are horrible the meat falls away to show a multitude of precious gems");
+                score += 15;
+                isA3 = false;
+                inop1A3 = false;
+                stA3 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) & inop1A3)
+            {
+                txtResult.text = ("You reach out for the pinecone but it turns out very sharp cutting and suprising you, you fall hard out of the tree try again? ('E') ");
+                score -= 10;
+                stA3 -=1;
+                speechA3 = true;
+                inop1A3 = false;
+                oplim1A3 = true;
+                oplim2A3 = true;
+                if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (speechA3 == true)
+                {
+                    score += 10; 
+                }
+                gs11();
+            }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5) & inop2A3)
+            {
+                txtResult.text = ("You finally feel at peace");
+                score += 10;
+                isA3 = false;
+                inop2A3 = false;
+                stA3 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6) & inop2A3)
+            {
+                txtResult.text = ("....");
+                score += 5;
+                isA3 = false;
+                inop2A3 = false;
+                stA3 = 0;
+            }
+        }
+        //--- -1,-1 ----C1------done//
+        if (isC1 & stC1 > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (inop2C1 == false & oplim1C1 == true)
+                {
+                    txtContent.text = "You have reached the motherload, a giant hive dripping with golden goodness awaits";
+                    optionA.text = "Option 3 Light a small fire to smoke the bees before harvesting";
+                    optionB.text = "Option 4 I cant wait any longer. Dig In!";
+                    inop1C1 = true;
+                    oplim1C1 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (inop1C1 == false & oplim2C1 == true)
+                {
+                    txtContent.text = "heading deeper into the woods every snap of a stick turns your head, you see a deer far away";
+                    optionA.text = "Option 5 return home with all you have";
+                    optionB.text = "The deer stands up. Run";
+                    inop2C1 = true;
+                    oplim2C1 = false;
+                    score += 10;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) & inop1C1)
+            {
+                txtResult.text = ("While It takes a while the payout is great and this honey will last you the winter");
+                score += 15;
+                isC1 = false;
+                inop1C1 = false;
+                stC1 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) & inop1C1)
+            {
+                txtResult.text = ("You reach out and grab, alost immediately though you are swarmed by hordes of angry bees try again? ('E') ");
+                score -= 10;
+                stC1 -=1;
+                speechC1 = true;
+                inop1C1 = false;
+                oplim1C1 = true;
+                oplim2C1 = true;
+                if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (speechC1 == true)
+                {
+                    score += 10; 
+                }
+                gsn1n1();
+            }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5) & inop2C1)
+            {
+                txtResult.text = ("You Escaped this time, be grateful");
+                score += 10;
+                isC1 = false;
+                inop2C1 = false;
+                stC1 = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6) & inop2C1)
+            {
+                txtResult.text = ("Repent");
+                score += 5;
+                isC1 = false;
+                inop2C1 = false;
+                stC1 = 0;
+            }
+        }
+    }
+        //----------speech start----------//
+        void gs00()
+        {
+            txtContent.text = "Move around the area and pass speech encounters to gain score. at anytime you can return to this field and press 'S' to move on to the next part of your story";
+            if (speechB2)
+            {
+            optionA.text = "option 1 examples of special endings";
+            optionB.text = "option 2 examples of normal endings";
+            speechB2 = false;
+            isB2 = true;
+            score += 10;
+            }
+            
+        }
+        void gs10()
+        {
+            txtContent.text = "welcome to the farmhouse! its where all our work gets done do you want to";
+            if (speechB3)
+            {
+                optionA.text = "option 1 bundle hay";
+                optionB.text = "option 2 pick flowers";
+                speechB3 = false;
+                isB3 = true;
+                stB3 = 3;
+                score += 10;
+            }
+        }
+        void gs01()
+        {
+            txtContent.text = "welcome to the field where we grow our wheat, its harvested right now though";
+            if (speechA2)
+            {
+                optionA.text = "Option 1 plant more wheat seeds";
+                optionB.text = "Option 2 till the fields again";
+                speechA2 = false;
+                score += 10;
+                isA2 = true;
+            }
+        }
+        void gsn10()
+        {
+            txtContent.text = "welcome to the lower lake, its the best place to relax and hook a few fish";
+            if (speechB1)
+            {
+                optionA.text = "Option 1 Try to catch some big fish";
+                optionB.text = "Option 2 use you net to cath smaller fish in the shallows";
+                speechB1 = false;
+                isB1 = true;
+                score += 10;
+            }
+        }
+        void gs0n1()
+        {
+            txtContent.text = "This is just another field to sprawl in but A strange rustling is coming from a darker rotting spot";
+            if (speechC2)
+            {
+                optionA.text = "Option 1 Investigate";
+                optionB.text = "Option 2 walk the other direction";
+                speechC2 = false;
+                score += 10;
+                isC2 = true;
+            }
+        }
+        void gs1n1(){
+            txtContent.text = "A small hill to watch the stars from. The side of the hill is still damp wih morning dew and a buzzing sound can be heard";
+            if (speechC3)
+            {
+                optionA.text = "Option 1 investigate the Buzzing sound";
+                optionB.text = "Option 2 wait until the hill isn't slippery";
+                speechC3 = false;
+                score += 10;
+                isC3 = true;
+            }
+        }
+        void gsn11(){
+            txtContent.text = "A relaxing overlap between tall wheat fields and our small pond";
+            if (speechA1)
+            {
+                optionA.text = "Option 1 Go fishing for fish to sell";
+                optionB.text = "Option 2 Go for a Swim to the deeper parts of the lake";
+                speechA1 = false;
+                score += 10;
+                isA1 = true;
+            }
+            
+        }
+        void gs11(){
+            txtContent.text = "A cozy place where you can nap under the shade of tall oak trees while watching the wheat sway";
+            if (speechA3)
+            {
+                optionA.text = "Option 1 Climb the tallest oak tree";
+                optionB.text = "Option 2 Take a relaxing nap under the shade of the trees";
+                speechA3 = false;
+                score += 10;
+                isA3 = true;
+            }
+        }
+        void gsn1n1(){
+            txtContent.text = "you've reached the border of the forest, watch out for the bees.";
+            if (speechC1)
+            {
+                optionA.text = "Option 1 Harvest Honey from the local bees";
+                optionB.text = "Venture into the dark woods";
+                speechC1 = false;
+                score += 10;
+                isC1 = true;
+            }
+        }
+}
