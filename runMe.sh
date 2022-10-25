@@ -2,4 +2,4 @@
 echo "what is your name"?
 read Name
 echo hello $Name
-touch new.txt
+echo Graham owns this computer > new.txt
