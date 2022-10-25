@@ -1,4 +1,1 @@
-# ExampleTHing
-//HIHHIHIHIHIHIHHI
-//This is a rrrreadme
-OR DO NOT READ ME!
+GRAHAM IS SUPER AWESOME AND BASED
